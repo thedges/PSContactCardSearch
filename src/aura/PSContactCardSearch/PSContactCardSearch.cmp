@@ -1,0 +1,81 @@
+<aura:component controller="PSContactCardSearchController" implements="force:appHostable,forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="runtimeEnv" type="Object" />
+    <aura:attribute name="recList" type="List" />
+    
+    <aura:attribute name="title" type="String" default="&nbsp;Contact Search&nbsp;"/>
+    
+    <aura:attribute name="name" type="String" default=""/>
+    <aura:attribute name="selectedTopic" type="String" default=""/>
+    <aura:attribute name="topicOptions" type="List" default=""/>
+    <aura:attribute name="selectedStrength" type="String" default=""/>
+    <aura:attribute name="strengthOptions" type="List" default=""/>
+    <aura:attribute name="errorMsg" type="String" />
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="container">
+        
+        <aura:if isTrue="{!v.errorMsg.length > 0}">
+            <ui:message title="Error" severity="error" closable="true">
+                {!v.errorMsg}
+            </ui:message>
+        </aura:if>
+        <div class="slds-grid slds-wrap slds-grid--pull-padded">
+            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <fieldset class="slds-box slds-theme--default">
+                    <legend class="slds-text-heading--medium "><span style="font-weight:bold">{!v.title}</span></legend>
+                    
+                    <form class="slds-form--inline slds-p-bottom_medium" id="filterForm">
+                        
+                        <div class="slds-form-element slds-is-required slds-p-bottom_xx-small">
+                            <label class="slds-form-element__label" for="NameSearch">Name:</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputText aura:id="NameSearch" class="slds-input" value="{!v.name}" />
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element slds-is-required" style="vertical-align: top;">
+                            <label class="slds-form-element__label" for="topic">Topic:</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputSelect aura:id="topic" class="slds-input" value="{!v.selectedTopic}">
+                                    <aura:iteration items="{!v.topicOptions}" var="top">
+                                        <ui:inputSelectOption text="{!top}" label="{!top}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element slds-is-required" style="vertical-align: top;">
+                            <div class="slds-form-element__control">
+                                <c:strike_multiSelectPicklist label="Strengths:"
+                                                              errorMessage="Invalid input" value="{!v.selectedStrength}">
+                                    <aura:iteration items="{!v.strengthOptions}" var="str">
+                                        <c:strike_option label="{!str}" value="{!str}"/>
+                                    </aura:iteration>
+                                </c:strike_multiSelectPicklist>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element XXslds-p-top--small">
+                            <ui:button label="Submit" class="slds-button" labelClass="label" press="{!c.fireFilter}" />
+                            <!-- <ui:button label="Reset" class="slds-button" labelClass="label" press="{!c.reset}" /> -->
+                        </div>
+                    </form>
+                    
+                    <aura:renderIf isTrue="{!and(v.recList != null, v.recList.length > 0)}">
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <aura:iteration items="{!v.recList}" var="rec">
+                                <div class="slds-col slds-p-bottom_medium slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12 ">
+                                    <c:PSContactCard contactId="{!rec.Id}" name="{!rec.Name}" street="{!rec.Address.street}" city="{!rec.Address.city}" state="{!rec.Address.state}" zipcode="{!rec.Address.postalCode}" photoURL="{!rec.MediumPhotoUrl}" 
+                                                     phone="{!rec.MobilePhone}" email="{!rec.Contact.Email}" title="{!rec.Title}"/>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </aura:renderIf>
+                    
+                </fieldset>
+            </div>
+        </div>     
+    </div>
+</aura:component>
