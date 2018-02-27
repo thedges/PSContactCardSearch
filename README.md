@@ -6,7 +6,7 @@ Note: Currently this component has no configuration parameters as was developed 
 
 <b>Dependency:</b> Install the [PSCommon](https://github.com/thedges/PSCommon) package first
 
-![alt text](https://github.com/thedges/PS311ServiceRequest/blob/master/311-community.png "Sample Image")
+![alt text](https://github.com/thedges/PSContactCardSearch/blob/master/PSContactCardSearch.gif "Sample Image")
 
 <a href="https://githubsfdeploy.herokuapp.com">
   <img alt="Deploy to Salesforce"
