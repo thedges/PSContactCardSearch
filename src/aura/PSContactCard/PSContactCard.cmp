@@ -16,7 +16,7 @@
             <img src="{!v.photoURL}" alt="Photo" style="border-radius:5px;" height="130" width="130"/>
         </div>
         <div class="slds-col slds-size_2-of-3">
-            <p><h3>{!v.name}</h3></p>
+            <p style="font-weight: bold;font-size: 135%;">{!v.name}</p>
             <aura:renderIf isTrue="{!and(v.title != null, v.title.length > 0)}">
               <p><i>{!v.title}</i></p>
             </aura:renderIf>

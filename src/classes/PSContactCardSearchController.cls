@@ -47,6 +47,21 @@ public class PSContactCardSearchController {
         
         return tmpStr;
     }
+    
+    private static String createInClauseIdList(List<Id> idList)
+    {   
+        String tmpStr = '';
+        for (Id i : idList)
+        {
+            if (tmpStr.length() > 0)
+            {
+                tmpStr += ',';
+            }
+            tmpStr += '\'' + i + '\'';
+        }
+        
+        return tmpStr;
+    }
         
     @AuraEnabled
     public static String queryContacts(String name, String topic, String strength)
@@ -57,12 +72,27 @@ public class PSContactCardSearchController {
         
         List<User> userList = new List<User>();
         
+       
+        System.debug('networkId=' + Network.getNetworkId());
+        List<NetworkMember> nwmemList = [SELECT Id, MemberId FROM NetworkMember WHERE NetworkId = :Network.getNetworkId()];
+        List<ID> memIdList = new List<ID>();
+        for (NetworkMember nwmem : nwmemList)
+        {
+            memIdList.add(nwmem.MemberId);
+        }
+        
         String queryStr = 'SELECT Id, Name, FirstName, LastName, IsActive, Address, Phone, MobilePhone,\n' + 
-                          '       Email, BadgeText, ContactId, ProfileId, MediumPhotoUrl, Contact.Email, Contact.MailingAddress, Topic__c, Strengths__c,\n' +
+                          '       Email, BadgeText, ContactId, ProfileId, FullPhotoUrl, Contact.Email, Contact.MailingAddress, Topic__c, Strengths__c,\n' +
                           '       Title, UserType\n'+ 
                           '  FROM User\n';
        
-        String whereClause = ' WHERE UserType  = \'CspLitePortal\' AND IsActive = true';
+        String whereClause = ' WHERE UserType  IN (\'CspLitePortal\',\'PowerCustomerSuccess\',\'PowerPartner\') AND IsActive = true';
+        //String whereClause = ' WHERE IsActive = true';
+        
+        if (memIdList.size() > 0)
+        {
+            whereClause += '\nAND Id IN (' + createInClauseIdList(memIdList) + ')';
+        }
         
         if (name != null && name.length() > 0)
         {
@@ -74,12 +104,9 @@ public class PSContactCardSearchController {
             whereClause += '\nAND Topic__c = \'' + topic + '\'';
         }
         
-        if (strength != null && strength.length() > 0)
+        if (strength != null && strength != 'null' && strength.length() > 0)
         {
-            List<String> parts = strength.split(';');
-
-            whereClause += '\nAND Strengths__c IN (' + createInClause(strength, ';') + ')';
-            
+            whereClause += '\nAND Strengths__c INCLUDES (' + createInClause(strength, ';') + ')';
         }
        
         if (whereClause != null) queryStr += whereClause;

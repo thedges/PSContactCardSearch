@@ -67,7 +67,7 @@
                         <div class="slds-grid slds-wrap slds-gutters">
                             <aura:iteration items="{!v.recList}" var="rec">
                                 <div class="slds-col slds-p-bottom_medium slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12 ">
-                                    <c:PSContactCard contactId="{!rec.Id}" name="{!rec.Name}" street="{!rec.Address.street}" city="{!rec.Address.city}" state="{!rec.Address.state}" zipcode="{!rec.Address.postalCode}" photoURL="{!rec.MediumPhotoUrl}" 
+                                    <c:PSContactCard contactId="{!rec.Id}" name="{!rec.Name}" street="{!rec.Address.street}" city="{!rec.Address.city}" state="{!rec.Address.state}" zipcode="{!rec.Address.postalCode}" photoURL="{!rec.FullPhotoUrl}" 
                                                      phone="{!rec.MobilePhone}" email="{!rec.Contact.Email}" title="{!rec.Title}"/>
                                 </div>
                             </aura:iteration>
