@@ -1,5 +1,7 @@
 # PSContactCardSearch
 
+THIS SOFTWARE IS COVERED BY [THIS DISCLAIMER](https://raw.githubusercontent.com/thedges/Disclaimer/master/disclaimer.txt).
+
 This package contains a component to search contacts within a community page and return contacts in a card/grid layout.
 
 Note: Currently this component has no configuration parameters as was developed for specific demo. Reach out to me if there is customization required.
